@@ -1,0 +1,62 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-10-23T21:03:42.347Z",
+        "reason": "agent decided: unchosen decision-round thumbnail sketch, never shipped"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-app.html"
+        ],
+        "createdAt": "2026-10-23T21:03:42.373Z",
+        "reason": "agent decided: decision-round sketch of the warm-consumer-app challenger, whose catalog world prescribes a warm tinted ground; never shipped"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-10-23T21:21:50.498Z",
+        "reason": "agent decided: spent decision-round sketch from before DESIGN.md existed, never shipped"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/pick.html"
+        ],
+        "createdAt": "2026-10-23T21:21:50.521Z",
+        "reason": "agent decided: spent decision-round sketch from before DESIGN.md existed, never shipped"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-app.html"
+        ],
+        "createdAt": "2026-10-23T21:21:50.543Z",
+        "reason": "agent decided: spent decision-round sketch from before DESIGN.md existed, never shipped"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/canon.html"
+        ],
+        "createdAt": "2026-10-23T21:21:50.565Z",
+        "reason": "agent decided: spent decision-round sketch from before DESIGN.md existed, never shipped"
+      }
+    ]
+  }
+}

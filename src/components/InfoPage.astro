@@ -1,0 +1,53 @@
+---
+import Icon from './Icon.astro';
+import { t } from '../i18n';
+import type { Lang } from '../data/products';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const s = t[lang];
+const uk = lang === 'uk';
+---
+<section class="wrap info">
+  <h1>{s.infoTitle}</h1>
+  <div class="info__grid">
+    <div class="info__block">
+      <h2>{uk ? 'Доставка' : 'Delivery'}</h2>
+      <p>{uk ? 'Доставляємо у відділення «Нової Пошти» по всій Україні протягом 1–3 днів з моменту оформлення замовлення, за тарифами «Нової Пошти».' : 'We ship to Nova Poshta branches across Ukraine within 1–3 days of your order, at Nova Poshta rates.'}</p>
+      <p>{uk ? 'Незалежно від способу оплати менеджер зателефонує, щоб уточнити деталі замовлення.' : 'Whatever the payment method, our manager will call to confirm the details.'}</p>
+    </div>
+    <div class="info__block">
+      <h2>{uk ? 'Оплата' : 'Payment'}</h2>
+      <ul>
+        <li>{uk ? 'Готівкою — під час самовивозу.' : 'Cash — on pickup.'}</li>
+        <li>{uk ? 'Під час отримання у відділенні «Нової Пошти» (за тарифами перевізника).' : 'On collection at a Nova Poshta branch (carrier fees apply).'}</li>
+        <li>{uk ? 'Безготівково на розрахунковий рахунок ТОВ «Біла Гуральня».' : 'Bank transfer to Bila Huralnia LLC.'}</li>
+        <li>{uk ? 'На картку ТОВ «Біла Гуральня» — реквізити надасть менеджер.' : 'Card transfer — our manager will send the details.'}</li>
+      </ul>
+    </div>
+    <div class="info__block">
+      <h2>{s.contacts}</h2>
+      <address>
+        <a href="tel:+380676000344" class="num"><Icon name="phone" />+38 (067) 600 03 44</a>
+        <a href="mailto:bilahuralnia@gmail.com"><Icon name="mail" />bilahuralnia@gmail.com</a>
+        <span><Icon name="pin" />{uk ? 'вул. С. Будного, 7, м. Тернопіль, 46027' : '7 S. Budnoho St, Ternopil 46027, Ukraine'}</span>
+      </address>
+    </div>
+  </div>
+  <p class="info__legal">{s.footerNote}</p>
+</section>
+
+<style>
+  .info { padding-block: clamp(3rem, 2rem + 4vw, 6rem) var(--section); }
+  .info h1 { font-size: var(--step-4); margin-bottom: clamp(2.5rem, 1rem + 4vw, 4.5rem); }
+  .info__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(2rem, 1rem + 3vw, 4rem); }
+  .info__block { border-top: 1px solid var(--line-gold); padding-top: 1.5rem; display: grid; align-content: start; gap: 1rem; color: var(--ink-2); max-width: 60ch; }
+  .info__block h2 { font-size: var(--step-2); color: var(--ink); }
+  .info__block ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.6rem; }
+  .info__block li::marker { color: var(--gold); }
+  .info address { font-style: normal; display: grid; gap: 0.9rem; }
+  .info address a, .info address span { display: inline-flex; gap: 0.6rem; align-items: center; text-decoration: none; }
+  .info address :global(svg) { width: 1.1rem; height: 1.1rem; color: var(--gold); flex: none; }
+  .info__legal { margin-top: 4rem; color: var(--ink-3); font-size: var(--step--1); }
+  @media (max-width: 900px) { .info__grid { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,51 @@
+---
+import Icon from './Icon.astro';
+import { t, href } from '../i18n';
+import type { Lang } from '../data/products';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const s = t[lang];
+---
+<footer class="ftr">
+  <div class="wrap ftr__grid">
+    <div class="ftr__brand">
+      <img src="/media/brand/logo-ivory.png" alt={s.rights} width="446" height="167" loading="lazy" />
+      <p>{s.footerNote}</p>
+    </div>
+    <nav class="ftr__col" aria-label={s.nav.collection}>
+      {(Object.entries(s.cats) as [string, string][]).map(([cat, label]) => <a href={href(lang, `/collection/?c=${cat}`)}>{label}</a>)}
+    </nav>
+    <nav class="ftr__col" aria-label={s.contacts}>
+      <a href={href(lang, '/#house')}>{s.nav.house}</a>
+      <a href={href(lang, '/delivery/')}>{s.deliveryTitle}</a>
+      <a href={href(lang, '/cart/')}>{s.cart}</a>
+    </nav>
+    <address class="ftr__col">
+      <a href="tel:+380676000344" class="num"><Icon name="phone" />+38 (067) 600 03 44</a>
+      <a href="mailto:bilahuralnia@gmail.com"><Icon name="mail" />bilahuralnia@gmail.com</a>
+      <span><Icon name="pin" />{lang === 'uk' ? 'вул. С. Будного, 7, Тернопіль' : '7 S. Budnoho St, Ternopil'}</span>
+      <span class="ftr__social"><a href="https://www.instagram.com/bilahuralnia/" rel="noopener">Instagram</a><a href="https://www.facebook.com/profile.php?id=100091459342744" rel="noopener">Facebook</a></span>
+    </address>
+  </div>
+  <div class="wrap ftr__base">
+    <span>© {new Date().getFullYear()} {s.rights}</span>
+    <span>{lang === 'uk' ? 'Надмірне вживання алкоголю шкодить вашому здоров’ю' : 'Excessive drinking is harmful to your health'}</span>
+  </div>
+</footer>
+
+<style>
+  .ftr { border-top: 1px solid var(--line); padding-top: clamp(3.5rem, 2rem + 5vw, 6rem); background: var(--ground); color: var(--ink-2); font-size: 0.9375rem; }
+  .ftr__grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.4fr; gap: 2.5rem; }
+  .ftr__brand img { width: 10rem; height: auto; margin-bottom: 1.5rem; }
+  .ftr__brand p { max-width: 26ch; }
+  .ftr__col { display: grid; align-content: start; gap: 0.85rem; font-style: normal; }
+  .ftr__col a, .ftr__col span { display: inline-flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+  .ftr__col a:hover { color: var(--ink); }
+  .ftr__col :global(svg) { width: 1.1rem; height: 1.1rem; color: var(--gold); flex: none; }
+  .ftr__social { gap: 1.5rem !important; padding-top: 0.5rem; }
+  .ftr__social a { color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase; font: 700 var(--step--1)/1 var(--sans); }
+  .ftr__base { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 4rem; padding-block: 1.5rem; border-top: 1px solid var(--line); font-size: var(--step--1); color: var(--ink-3); }
+  @media (max-width: 900px) { .ftr__grid { grid-template-columns: 1fr 1fr; } .ftr__brand { grid-column: 1 / -1; } }
+  @media (max-width: 520px) { .ftr__grid { grid-template-columns: 1fr; } }
+</style>

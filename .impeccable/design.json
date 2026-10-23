@@ -1,0 +1,449 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-23T21:21:07+00:00",
+  "title": "Design System: Біла Гуральня / Bila Huralnia",
+  "extensions": {
+    "colorMeta": {
+      "ground": {
+        "role": "neutral",
+        "displayName": "Cellar Black",
+        "canonical": "oklch(15.6% 0.005 67)",
+        "tonalRamp": [
+          "oklch(15% 0.005 67)",
+          "oklch(25% 0.005 67)",
+          "oklch(35% 0.005 67)",
+          "oklch(47% 0.005 67)",
+          "oklch(59% 0.005 67)",
+          "oklch(71% 0.005 67)",
+          "oklch(83% 0.005 67)",
+          "oklch(95% 0.005 67)"
+        ]
+      },
+      "raised": {
+        "role": "neutral",
+        "displayName": "Cask Brown",
+        "canonical": "oklch(19.0% 0.010 67)",
+        "tonalRamp": [
+          "oklch(15% 0.010 67)",
+          "oklch(25% 0.010 67)",
+          "oklch(35% 0.010 67)",
+          "oklch(47% 0.010 67)",
+          "oklch(59% 0.010 67)",
+          "oklch(71% 0.010 67)",
+          "oklch(83% 0.010 67)",
+          "oklch(95% 0.010 67)"
+        ]
+      },
+      "raised-2": {
+        "role": "neutral",
+        "displayName": "Deep Cask",
+        "canonical": "oklch(22.3% 0.015 67)",
+        "tonalRamp": [
+          "oklch(15% 0.015 67)",
+          "oklch(25% 0.015 67)",
+          "oklch(35% 0.015 67)",
+          "oklch(47% 0.015 67)",
+          "oklch(59% 0.015 67)",
+          "oklch(71% 0.015 67)",
+          "oklch(83% 0.015 67)",
+          "oklch(95% 0.015 67)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ivory",
+        "canonical": "oklch(92.1% 0.025 83)",
+        "tonalRamp": [
+          "oklch(15% 0.025 83)",
+          "oklch(25% 0.025 83)",
+          "oklch(35% 0.025 83)",
+          "oklch(47% 0.025 83)",
+          "oklch(59% 0.025 83)",
+          "oklch(71% 0.025 83)",
+          "oklch(83% 0.025 83)",
+          "oklch(95% 0.025 83)"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Parchment",
+        "canonical": "oklch(73.7% 0.033 80)",
+        "tonalRamp": [
+          "oklch(15% 0.033 80)",
+          "oklch(25% 0.033 80)",
+          "oklch(35% 0.033 80)",
+          "oklch(47% 0.033 80)",
+          "oklch(59% 0.033 80)",
+          "oklch(71% 0.033 80)",
+          "oklch(83% 0.033 80)",
+          "oklch(95% 0.033 80)"
+        ]
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Faded Parchment",
+        "canonical": "oklch(60.1% 0.028 79)",
+        "tonalRamp": [
+          "oklch(15% 0.028 79)",
+          "oklch(25% 0.028 79)",
+          "oklch(35% 0.028 79)",
+          "oklch(47% 0.028 79)",
+          "oklch(59% 0.028 79)",
+          "oklch(71% 0.028 79)",
+          "oklch(83% 0.028 79)",
+          "oklch(95% 0.028 79)"
+        ]
+      },
+      "gold": {
+        "role": "primary",
+        "displayName": "Antique Gold",
+        "canonical": "oklch(73.7% 0.101 83)",
+        "tonalRamp": [
+          "oklch(15% 0.101 83)",
+          "oklch(25% 0.101 83)",
+          "oklch(35% 0.101 83)",
+          "oklch(47% 0.101 83)",
+          "oklch(59% 0.101 83)",
+          "oklch(71% 0.101 83)",
+          "oklch(83% 0.101 83)",
+          "oklch(95% 0.101 83)"
+        ]
+      },
+      "gold-hi": {
+        "role": "primary",
+        "displayName": "Lit Gold",
+        "canonical": "oklch(81.8% 0.092 84)",
+        "tonalRamp": [
+          "oklch(15% 0.092 84)",
+          "oklch(25% 0.092 84)",
+          "oklch(35% 0.092 84)",
+          "oklch(47% 0.092 84)",
+          "oklch(59% 0.092 84)",
+          "oklch(71% 0.092 84)",
+          "oklch(83% 0.092 84)",
+          "oklch(95% 0.092 84)"
+        ]
+      },
+      "on-gold": {
+        "role": "primary",
+        "displayName": "On-Gold",
+        "canonical": "oklch(18.1% 0.012 73)",
+        "tonalRamp": [
+          "oklch(15% 0.012 73)",
+          "oklch(25% 0.012 73)",
+          "oklch(35% 0.012 73)",
+          "oklch(47% 0.012 73)",
+          "oklch(59% 0.012 73)",
+          "oklch(71% 0.012 73)",
+          "oklch(83% 0.012 73)",
+          "oklch(95% 0.012 73)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Ivory Hairline",
+        "canonical": "rgb(237 228 211 / 0.14)",
+        "tonalRamp": [
+          "oklch(15% 0.025 83)",
+          "oklch(25% 0.025 83)",
+          "oklch(35% 0.025 83)",
+          "oklch(47% 0.025 83)",
+          "oklch(59% 0.025 83)",
+          "oklch(71% 0.025 83)",
+          "oklch(83% 0.025 83)",
+          "oklch(95% 0.025 83)"
+        ]
+      },
+      "line-gold": {
+        "role": "neutral",
+        "displayName": "Gold Hairline",
+        "canonical": "rgb(201 164 92 / 0.45)",
+        "tonalRamp": [
+          "oklch(15% 0.101 83)",
+          "oklch(25% 0.101 83)",
+          "oklch(35% 0.101 83)",
+          "oklch(47% 0.101 83)",
+          "oklch(59% 0.101 83)",
+          "oklch(71% 0.101 83)",
+          "oklch(83% 0.101 83)",
+          "oklch(95% 0.101 83)"
+        ]
+      },
+      "niche": {
+        "role": "neutral",
+        "displayName": "Studio Grey",
+        "canonical": "oklch(87.6% 0.006 308)",
+        "tonalRamp": [
+          "oklch(15% 0.006 308)",
+          "oklch(25% 0.006 308)",
+          "oklch(35% 0.006 308)",
+          "oklch(47% 0.006 308)",
+          "oklch(59% 0.006 308)",
+          "oklch(71% 0.006 308)",
+          "oklch(83% 0.006 308)",
+          "oklch(95% 0.006 308)"
+        ]
+      },
+      "danger": {
+        "role": "error",
+        "displayName": "Ember",
+        "canonical": "oklch(72.3% 0.118 37)",
+        "tonalRamp": [
+          "oklch(15% 0.118 37)",
+          "oklch(25% 0.118 37)",
+          "oklch(35% 0.118 37)",
+          "oklch(47% 0.118 37)",
+          "oklch(59% 0.118 37)",
+          "oklch(71% 0.118 37)",
+          "oklch(83% 0.118 37)",
+          "oklch(95% 0.118 37)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headline, product name, page titles; one per page."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section heads, gift feature, mobile menu links, dialog title; italic for the closing quote."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Tile, gift-row and cart-line names; panel headings."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Prices, spec values, sums and fact terms in tabular lining numerals."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text, 46 to 62ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Buttons, navigation, filters, add-to-cart, list titles; never an eyebrow above a heading."
+      }
+    },
+    "shadows": [
+      {
+        "name": "dialog",
+        "value": "0 40px 80px -20px rgb(0 0 0 / 0.7)",
+        "purpose": "Age-gate dialog over a blurred 82% backdrop."
+      },
+      {
+        "name": "notice",
+        "value": "0 18px 40px -12px rgb(0 0 0 / 0.6)",
+        "purpose": "Add-to-cart toast."
+      },
+      {
+        "name": "bottle-cutout",
+        "value": "drop-shadow(0 8px 14px rgb(0 0 0 / 0.55))",
+        "purpose": "filter on alpha cut-out bottles in rows and cart lines (0 6px 10px / 0.5 in the hero band)."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The only easing curve; every transition and keyframe."
+      },
+      {
+        "name": "state-fast",
+        "value": "0.3s",
+        "purpose": "Colour and border changes on add, inputs, filters."
+      },
+      {
+        "name": "state",
+        "value": "0.4s",
+        "purpose": "Button fill and border changes."
+      },
+      {
+        "name": "draw",
+        "value": "0.5s",
+        "purpose": "Gold hairline underline draw, header background change, arrow nudge, toast in."
+      },
+      {
+        "name": "bump",
+        "value": "0.6s",
+        "purpose": "Cart count scale to 1.35 when an item is added."
+      },
+      {
+        "name": "gate-in",
+        "value": "0.7s",
+        "purpose": "Age-gate rise 0.75rem and fade."
+      },
+      {
+        "name": "image-zoom",
+        "value": "1.2s",
+        "purpose": "Niche photo scale to 1.035 on tile hover."
+      },
+      {
+        "name": "settle",
+        "value": "1.6s",
+        "purpose": "Hero headline settles once from blur, 35% opacity and open tracking; off under reduced motion."
+      },
+      {
+        "name": "push-in",
+        "value": "14s",
+        "purpose": "Hero film scales from 1.08 to 1; off under reduced motion."
+      },
+      {
+        "name": "filter-crossfade",
+        "value": "view transition",
+        "purpose": "Collection grid crossfades between filters via startViewTransition, skipped under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide",
+        "value": "1100px"
+      },
+      {
+        "name": "tablet",
+        "value": "900px"
+      },
+      {
+        "name": "collection-2up",
+        "value": "760px"
+      },
+      {
+        "name": "phone",
+        "value": "600px"
+      },
+      {
+        "name": "narrow",
+        "value": "520px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one gold-filled action per view: choose a bottle, checkout, confirm age.",
+      "html": "<button class=\"ds-btn\">Обрати пляшку<svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"square\" stroke-linejoin=\"miter\" aria-hidden=\"true\"><path d=\"M4 12h15 M13 6l6 6-6 6\"/></svg></button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;gap:0.6em;min-height:3.25rem;padding:0 1.75rem;border:1px solid var(--gold,#c9a45c);background:var(--gold,#c9a45c);color:var(--on-gold,#15110c);font:700 0.8125rem/1 'Arsenal','Helvetica Neue',Arial,sans-serif;letter-spacing:0.18em;text-transform:uppercase;border-radius:0;cursor:pointer;transition:background-color .4s cubic-bezier(0.16, 1, 0.3, 1),border-color .4s cubic-bezier(0.16, 1, 0.3, 1);}.ds-btn:hover{background:var(--gold-hi,#e0bf7d);border-color:var(--gold-hi,#e0bf7d);}.ds-btn:focus-visible{outline:2px solid var(--gold,#c9a45c);outline-offset:3px;}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary path beside the primary, e.g. gift sets.",
+      "html": "<button class=\"ds-btn-ghost\">Подарункові набори</button>",
+      "css": ".ds-btn-ghost{display:inline-flex;align-items:center;min-height:3.25rem;padding:0 1.75rem;border:1px solid rgb(237 228 211 / .5);background:transparent;color:var(--ink,#ede4d3);font:700 0.8125rem/1 'Arsenal','Helvetica Neue',Arial,sans-serif;letter-spacing:0.18em;text-transform:uppercase;border-radius:0;cursor:pointer;transition:background-color .4s cubic-bezier(0.16, 1, 0.3, 1),border-color .4s cubic-bezier(0.16, 1, 0.3, 1);}.ds-btn-ghost:hover{background:rgb(237 228 211 / .08);border-color:var(--ink,#ede4d3);}.ds-btn-ghost:focus-visible{outline:2px solid var(--gold,#c9a45c);outline-offset:3px;}"
+    },
+    {
+      "name": "Add to Cart (line)",
+      "kind": "custom",
+      "refersTo": "add-line",
+      "description": "Quiet gold line button in tiles; swaps to an ivory check when added.",
+      "html": "<button class=\"ds-add\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"square\" stroke-linejoin=\"miter\" aria-hidden=\"true\"><path d=\"M12 5v14 M5 12h14\"/></svg>До кошика</button> <button class=\"ds-add is-added\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"square\" stroke-linejoin=\"miter\" aria-hidden=\"true\"><path d=\"M4.5 12.5l5 5 10-11\"/></svg>Додано</button>",
+      "css": ".ds-add{display:inline-flex;align-items:center;gap:.5em;min-height:2.75rem;padding:0 0 0 .9rem;border:0;border-left:1px solid var(--line-gold,rgb(201 164 92 / .45));background:none;color:var(--gold,#c9a45c);font:700 .8125rem/1 'Arsenal',sans-serif;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:color .3s cubic-bezier(0.16, 1, 0.3, 1);}.ds-add:hover{color:var(--gold-hi,#e0bf7d);}.ds-add.is-added{color:var(--ink,#ede4d3);}.ds-add:focus-visible{outline:2px solid var(--gold,#c9a45c);outline-offset:3px;}"
+    },
+    {
+      "name": "Product Tile",
+      "kind": "card",
+      "refersTo": "tile-niche",
+      "description": "Bottle in a 4:5 Studio Grey niche, serif name, meta, hairline buy row.",
+      "html": "<article class=\"ds-tile\"><div class=\"ds-tile__niche\"></div><h3 class=\"ds-tile__name\">Бузиново-житній</h3><p class=\"ds-tile__meta\">Самогон · 0,7 л · 45%</p><div class=\"ds-tile__buy\"><span class=\"ds-tile__price\">395 ₴</span><button class=\"ds-add\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"square\" stroke-linejoin=\"miter\" aria-hidden=\"true\"><path d=\"M12 5v14 M5 12h14\"/></svg>До кошика</button></div></article>",
+      "css": ".ds-tile{display:flex;flex-direction:column;gap:1rem;width:16rem;color:var(--ink,#ede4d3);background:var(--ground,#0e0c0a);}.ds-tile__niche{aspect-ratio:4/5;background:var(--niche,#d7d5d9);}.ds-tile__name{margin:0;font:300 1.625rem/1.1 'Spectral',serif;}.ds-tile__meta{margin:-.65rem 0 0;color:var(--ink-2,#b5a893);font:400 .8125rem/1.4 'Arsenal',sans-serif;letter-spacing:.06em;}.ds-tile__buy{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line,rgb(237 228 211 / .14));padding-top:.75rem;}.ds-tile__price{font:400 1.25rem/1 'Spectral',serif;font-variant-numeric:tabular-nums lining-nums;}.ds-add{display:inline-flex;align-items:center;gap:.5em;min-height:2.75rem;padding:0 0 0 .9rem;border:0;border-left:1px solid var(--line-gold,rgb(201 164 92 / .45));background:none;color:var(--gold,#c9a45c);font:700 .8125rem/1 'Arsenal',sans-serif;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;}.ds-add:hover{color:var(--gold-hi,#e0bf7d);}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Square raised field with caption; gold border on focus, Ember on error.",
+      "html": "<label class=\"ds-field\"><span>Телефон</span><input class=\"ds-input\" placeholder=\"+38 0__ ___ __ __\"></label>",
+      "css": ".ds-field{display:grid;gap:.45rem;width:18rem;}.ds-field>span{font:400 .8125rem/1.3 'Arsenal',sans-serif;letter-spacing:.08em;color:var(--ink-2,#b5a893);}.ds-input{min-height:3.25rem;padding:.75rem 1rem;background:var(--raised,#17130f);color:var(--ink,#ede4d3);border:1px solid var(--line,rgb(237 228 211 / .14));border-radius:0;font:400 1.0625rem/1.6 'Arsenal',sans-serif;transition:border-color .3s cubic-bezier(0.16, 1, 0.3, 1);}.ds-input::placeholder{color:var(--ink-3,#8a7f6e);}.ds-input:hover{border-color:rgb(237 228 211 / .3);}.ds-input:focus{outline:none;border-color:var(--gold,#c9a45c);}.ds-input[aria-invalid=true]{border-color:var(--danger,#e58a6f);}"
+    },
+    {
+      "name": "Header Navigation",
+      "kind": "nav",
+      "description": "Tracked-caps links with a gold hairline drawn from the left on hover; cart with gold count.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\">Колекція</a><a href=\"#\">Подарунки</a><a href=\"#\">Гуральня</a><span class=\"ds-nav__cart\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"square\" stroke-linejoin=\"miter\" aria-hidden=\"true\"><path d=\"M5 8h14l-1 12H6L5 8Z M9 8V6a3 3 0 0 1 6 0v2\"/></svg><b>2</b></span></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;gap:2.5rem;height:4.75rem;padding:0 1.5rem;background:var(--ground,#0e0c0a);border-bottom:1px solid var(--line,rgb(237 228 211 / .14));color:var(--ink,#ede4d3);}.ds-nav a{font:700 0.8125rem/1 'Arsenal','Helvetica Neue',Arial,sans-serif;letter-spacing:0.18em;text-transform:uppercase;color:inherit;text-decoration:none;padding-block:.75rem;background:linear-gradient(var(--gold,#c9a45c),var(--gold,#c9a45c)) no-repeat 0 85%/0 1px;transition:background-size .5s cubic-bezier(0.16, 1, 0.3, 1);}.ds-nav a:hover{background-size:100% 1px;}.ds-nav a:focus-visible{outline:2px solid var(--gold,#c9a45c);outline-offset:3px;}.ds-nav__cart{position:relative;display:grid;place-items:center;width:2.75rem;height:2.75rem;margin-left:auto;}.ds-nav__cart svg{width:1.5rem;height:1.5rem;}.ds-nav__cart b{position:absolute;top:.1rem;right:-.1rem;min-width:1.25rem;height:1.25rem;display:grid;place-items:center;background:var(--gold,#c9a45c);color:var(--on-gold,#15110c);font:700 .6875rem/1 'Arsenal',sans-serif;}"
+    },
+    {
+      "name": "Collection Filter",
+      "kind": "chip",
+      "description": "Text filters; active is ivory with a gold underline and gold superscript count.",
+      "html": "<div class=\"ds-filters\"><button aria-pressed=\"true\">Усі<sup>20</sup></button><button aria-pressed=\"false\">Самогон<sup>9</sup></button><button aria-pressed=\"false\">Подарунки<sup>5</sup></button></div>",
+      "css": ".ds-filters{display:flex;gap:1.75rem;}.ds-filters button{position:relative;min-height:2.75rem;padding:0;background:none;border:0;cursor:pointer;font:700 0.8125rem/1 'Arsenal','Helvetica Neue',Arial,sans-serif;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-2,#b5a893);transition:color .3s cubic-bezier(0.16, 1, 0.3, 1);}.ds-filters button::after{content:'';position:absolute;left:0;right:0;bottom:.35rem;height:1px;background:var(--gold,#c9a45c);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(0.16, 1, 0.3, 1);}.ds-filters button:hover,.ds-filters button[aria-pressed=true]{color:var(--ink,#ede4d3);}.ds-filters button[aria-pressed=true]::after{transform:scaleX(1);}.ds-filters sup{margin-left:.35em;font-size:.6875rem;letter-spacing:.04em;color:var(--gold,#c9a45c);}"
+    },
+    {
+      "name": "Spec Row",
+      "kind": "custom",
+      "description": "Product spec sheet: tiny tracked keys over serif figures between ivory hairlines.",
+      "html": "<dl class=\"ds-spec\"><div><dt>Об’єм</dt><dd>0,7 л</dd></div><div><dt>Міцність</dt><dd>45% vol</dd></div><div><dt>Ціна</dt><dd>385 ₴</dd></div></dl>",
+      "css": ".ds-spec{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:2.5rem;margin:0;padding-block:1.25rem;border-block:1px solid var(--line,rgb(237 228 211 / .14));color:var(--ink,#ede4d3);}.ds-spec dt{font:700 .6875rem/1 'Arsenal',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3,#8a7f6e);margin-bottom:.5rem;}.ds-spec dd{margin:0;font:400 1.25rem/1 'Spectral',serif;font-variant-numeric:tabular-nums lining-nums;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Lit Vitrine",
+    "overview": "**Creative North Star: \"The Lit Vitrine\"**\n\nA warm near-black house where the only bright things are the bottles. Each bottle stands in a pale grey studio niche like an object in a display case; everything around it is dark, quiet and ruled with fine hairlines. The brand film carries the opening, a light high-contrast serif carries the names, and a Cyrillic-native semi-grotesque carries everything practical. Gold is antique and scarce: it marks rules, small tracked labels, prices of note and the single action that buys.\n\nDensity is low and unhurried. Sections breathe on a large fluid rhythm, corners are square everywhere, and depth comes from tone and photography rather than from cards. Motion is slow and decelerating (one long out-expo curve), used for a film push-in, a headline that settles once, a hairline that draws under hovered navigation, a filter crossfade and an add button that confirms itself.",
+    "keyCharacteristics": [
+      "Warm near-black ground with one lifted surface; ivory ink in three steps.",
+      "Bottles always on the grey niche or as alpha cut-outs with a soft drop shadow; never on the dark ground as a flat rectangle.",
+      "Light serif (Spectral 300) for names and headings; Arsenal for body, labels and controls.",
+      "Square corners, 1px hairlines, gold reserved for rules, labels and the buy action.",
+      "Authored 1.5px square-cap line icons on a 24 grid.",
+      "One easing curve (`cubic-bezier(0.16, 1, 0.3, 1)`), long durations (0.3s to 1.6s, film 14s)."
+    ],
+    "rules": [
+      {
+        "name": "The Spent Gold Rule",
+        "body": "Gold appears as a fill only on the single buy or proceed action in view and the cart count; elsewhere it is a 1px line, a small label or an icon stroke. A second gold-filled button on one screen is a mistake.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Lift Rule",
+        "body": "There is one lifted surface (raised). Floating notices may use raised-2; nothing stacks a third tone.",
+        "section": "colors"
+      },
+      {
+        "name": "The Light Serif Rule",
+        "body": "Headings are Spectral at weight 300 and never bolded; emphasis inside the serif comes from size or italic, not weight.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Price Rule",
+        "body": "Every price, volume, ABV and quantity is set with tabular lining numerals.",
+        "section": "typography"
+      },
+      {
+        "name": "The Label Is Not a Kicker Rule",
+        "body": "Tracked caps name a control, a list or a spec key. They never sit above a heading as an eyebrow.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Surface Rule",
+        "body": "Panels, tiles and sections never carry a shadow; only things that float above the page (dialog, toast) or a cut-out bottle do.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Scrim Rule",
+        "body": "Text over photography or film sits on a ground-coloured gradient scrim (and, in the hero, a soft radial shade behind the copy); never place ivory text on an unshaded image.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** keep every bottle on the Studio Grey niche or as a cut-out with the bottle drop shadow.",
+      "**Do** spend gold on one filled action per view and otherwise as 1px rules, labels and icon strokes.",
+      "**Do** set headings in Spectral 300 and prices in tabular lining numerals.",
+      "**Do** use the house easing `cubic-bezier(0.16, 1, 0.3, 1)` for every transition, and switch the film push-in and headline settle off under reduced motion.",
+      "**Do** keep corners square and edges as 1px hairlines; a gold rule leads a list, ivory rules divide it.",
+      "**Do** keep controls at least 2.75rem tall and focus visible as a 2px gold outline."
+    ],
+    "donts": [
+      "**Don't** put a shadow on a tile, panel or section; shadows belong to the dialog, the toast and cut-out bottles.",
+      "**Don't** introduce a radius other than the round radio.",
+      "**Don't** set tracked caps above a heading as an eyebrow.",
+      "**Don't** add a third surface tone or a second accent hue; Ember is for errors only.",
+      "**Don't** use stock or generated imagery, or redraw the logo; use the supplied photos, film and marks.",
+      "**Don't** set ivory text directly on photography without a ground scrim."
+    ]
+  }
+}

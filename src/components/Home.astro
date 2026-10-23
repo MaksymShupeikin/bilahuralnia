@@ -1,0 +1,244 @@
+---
+import Collection from './Collection.astro';
+import AddButton from './AddButton.astro';
+import Icon from './Icon.astro';
+import { t, href, price } from '../i18n';
+import { products, type Lang } from '../data/products';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const s = t[lang];
+const classics = products.filter((p) => p.classic);
+const gifts = products.filter((p) => p.cat === 'gift');
+const [featured, ...giftRest] = gifts;
+---
+<section class="hero" aria-labelledby="hero-title">
+  <video class="hero__film" autoplay muted loop playsinline preload="metadata" poster="/media/film-poster.webp" aria-hidden="true" data-film>
+    <source src="/media/film.mp4" type="video/mp4" />
+  </video>
+  <div class="hero__copy">
+    <h1 id="hero-title">{s.heroTitle}</h1>
+    <p>{s.heroLead}</p>
+    <div class="hero__cta">
+      <a class="btn" href="#collection">{s.heroCta}<Icon name="arrow" /></a>
+      <a class="btn btn--ghost" href="#gifts">{s.heroGifts}</a>
+    </div>
+  </div>
+  <div class="classics" aria-label={s.classics}>
+    <p class="classics__title label">{s.classics}</p>
+    <ul class="classics__list">
+      {classics.map((p) => (
+        <li class="classic">
+          <a class="classic__img" href={href(lang, `/product/${p.slug}/`)} tabindex="-1" aria-hidden="true">
+            <img src={`/media/cut/${p.img}.webp`} alt="" width="180" height="450" />
+          </a>
+          <div class="classic__text">
+            <a class="classic__name" href={href(lang, `/product/${p.slug}/`)}>{p.name[lang]}</a>
+            <span class="num">{price(p.price)}</span>
+          </div>
+          <AddButton lang={lang} product={p} class="add--icon" />
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section class="house section" id="house" aria-labelledby="house-title">
+  <div class="wrap house__grid">
+    <figure class="house__photo">
+      <img src="/media/barrels.webp" alt={lang === 'uk' ? 'Дубові бочки у льоху гуральні' : 'Oak barrels in the distillery cellar'} width="1280" height="1000" loading="lazy" />
+    </figure>
+    <div class="house__text">
+      <h2 id="house-title">{s.houseTitle}</h2>
+      <p class="house__lead">{s.houseText}</p>
+      <dl class="house__facts">
+        {s.facts.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+      </dl>
+    </div>
+  </div>
+</section>
+
+<hr class="rule wrap" />
+
+<Collection lang={lang} exclude="gift" />
+
+<section class="gifts section" id="gifts" aria-labelledby="gifts-title">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2 id="gifts-title">{s.giftsTitle}</h2>
+        <p class="gifts__lead">{s.giftsText}</p>
+      </div>
+      <a class="gifts__all label" href={href(lang, '/collection/?c=gift')}>{s.allGifts}<Icon name="arrow" /></a>
+    </div>
+    <div class="gifts__grid">
+      <article class="gift-feature">
+        <a class="gift-feature__img" href={href(lang, `/product/${featured.slug}/`)} tabindex="-1" aria-hidden="true">
+          <img src="/media/four-bottles.webp" alt="" width="1280" height="1000" loading="lazy" />
+        </a>
+        <div class="gift-feature__body">
+          <h3><a href={href(lang, `/product/${featured.slug}/`)}>{featured.name[lang]}</a></h3>
+          <p>{featured.desc?.[lang]}</p>
+          <div class="tile__buy">
+            <span class="tile__price num">{price(featured.price)}</span>
+            <AddButton lang={lang} product={featured} />
+          </div>
+        </div>
+      </article>
+      <ul class="gift-list">
+        {giftRest.map((p) => (
+          <li class="gift-row">
+            <img src={`/media/cut/${p.img}.webp`} alt="" width="360" height="450" loading="lazy" />
+            <div class="gift-row__text">
+              <h3><a href={href(lang, `/product/${p.slug}/`)}>{p.name[lang]}</a></h3>
+              <p class="num">{p.kind[lang]} · {p.volume[lang]}</p>
+            </div>
+            <div class="gift-row__buy">
+              <span class="tile__price num">{price(p.price)}</span>
+              <AddButton lang={lang} product={p} />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="delivery section" aria-labelledby="delivery-title">
+  <div class="wrap delivery__grid">
+    <h2 id="delivery-title">{s.deliveryTitle}</h2>
+    <ul class="delivery__list">
+      {s.delivery.map(([k, v]) => <li><h3>{k}</h3><p>{v}</p></li>)}
+    </ul>
+    <p class="delivery__pickup"><Icon name="pin" />{s.pickup}<a href={href(lang, '/delivery/')}>{s.more}</a></p>
+  </div>
+</section>
+
+<section class="closing" aria-labelledby="closing-title">
+  <img src="/media/barrels-wide.webp" alt="" width="1920" height="500" loading="lazy" />
+  <div class="wrap closing__inner">
+    <blockquote>
+      <p id="closing-title">{lang === 'uk' ? 'Варити самогон\u00a0— це створювати національний продукт.' : 'To distil samohon is to make a national product.'}</p>
+    </blockquote>
+    <a class="btn" href="#collection">{s.heroCta}<Icon name="arrow" /></a>
+  </div>
+</section>
+
+<script>
+  const film = document.querySelector<HTMLVideoElement>('[data-film]');
+  if (film && matchMedia('(prefers-reduced-motion: reduce)').matches) { film.removeAttribute('autoplay'); film.pause(); }
+</script>
+
+<style>
+  /* Hero: the film owns the first screen. */
+  .hero { position: relative; min-height: 100svh; display: grid; grid-template-rows: 1fr auto; grid-template-columns: minmax(0, 1fr); overflow: hidden; isolation: isolate; }
+  .hero__film { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; animation: push 14s var(--ease) both; }
+  .hero::before { content: ''; position: absolute; inset: 0; z-index: -1; background:
+      linear-gradient(180deg, rgb(14 12 10 / 0.7) 0%, rgb(14 12 10 / 0) 22%),
+      linear-gradient(0deg, rgb(14 12 10 / 0.96) 0%, rgb(14 12 10 / 0.6) 22%, rgb(14 12 10 / 0) 45%); }
+  @keyframes push { from { transform: scale(1.08); } }
+  .hero__copy { position: relative; align-self: center; text-align: center; padding: calc(var(--header-h) + 2rem) var(--gutter) 2rem; }
+  .hero__copy::before { content: ''; position: absolute; z-index: -1; inset: 10% -18% -8%; background: radial-gradient(farthest-side, rgb(10 8 7 / 0.9), rgb(10 8 7 / 0.72) 60%, transparent); pointer-events: none; }
+  .hero__copy h1 { font-size: var(--step-4); animation: settle 1.6s var(--ease) both; }
+  .hero__copy p { max-width: 62ch; margin: 1.25rem auto 0; color: var(--ink); font-size: var(--step-1); line-height: 1.5; text-shadow: 0 1px 12px rgb(0 0 0 / 0.6); }
+  .hero__cta { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-top: 2.25rem; }
+  .hero__cta .btn--ghost { background: rgb(14 12 10 / 0.62); }
+  @keyframes settle { from { opacity: 0.35; filter: blur(8px); letter-spacing: 0.04em; } }
+  @media (prefers-reduced-motion: reduce) { .hero__film, .hero__copy h1 { animation: none; } }
+
+  .classics { width: min(100% - 2 * var(--gutter), var(--max)); margin: 0 auto; padding-bottom: clamp(1.25rem, 0.5rem + 2vw, 2.25rem); }
+  .classics__title { color: var(--ink-2); padding-bottom: 0.9rem; border-bottom: 1px solid var(--line-gold); }
+  .classics__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .classic { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; padding: 1rem 1.25rem 0 0; }
+  .classic + .classic { padding-left: 1.25rem; border-left: 1px solid var(--line); }
+  .classic__img img { width: 3.5rem; height: 4.375rem; object-fit: contain; filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.5)); }
+  .classic__text { display: grid; gap: 0.2rem; min-width: 0; }
+  .classic__name { font: 300 var(--step-1)/1.15 var(--serif); text-decoration: none; }
+  .classic__name:hover { text-decoration: underline; }
+  .classic__text span { color: var(--ink-2); font-size: 0.9375rem; }
+  :global(.add--icon) { width: 2.75rem; padding: 0; justify-content: center; border: 1px solid var(--line-gold); }
+  :global(.add--icon .when-idle), :global(.add--icon .when-added) { font-size: 0; letter-spacing: 0; gap: 0; }
+  :global(.add--icon svg) { width: 1.1rem; height: 1.1rem; }
+  :global(.add--icon:hover) { border-color: var(--gold); background: rgb(201 164 92 / 0.12); }
+
+  @media (max-width: 1100px) {
+    .classics__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .classic:nth-child(3) { padding-left: 0; border-left: 0; }
+    .classic:nth-child(n + 3) { border-top: 1px solid var(--line); margin-top: 1rem; }
+  }
+  @media (max-width: 600px) {
+    .hero__copy { padding-top: calc(var(--header-h) + 1rem); }
+    .hero__copy p { font-size: var(--step-0); }
+    .hero__copy::before { inset: 4% -45% -10%; }
+    /* a phone crop is mostly label close-up, so the whole film sits lower */
+    .hero__film { filter: brightness(0.62); }
+    .classics__list { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); scrollbar-width: none; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); gap: 0; }
+    .classic { flex: 0 0 78%; scroll-snap-align: start; margin-top: 0 !important; border-top: 0 !important; }
+    .classic:nth-child(n + 2) { padding-left: 1rem; border-left: 1px solid var(--line); }
+  }
+
+  /* House */
+  .house__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gutter); align-items: center; }
+  .house__photo { grid-column: 1 / span 7; margin: 0; }
+  .house__photo img { width: 100%; aspect-ratio: 4 / 3.4; object-fit: cover; filter: brightness(0.78) saturate(0.8) contrast(1.08); }
+  .house__text { grid-column: 8 / -1; }
+  .house__text h2 { font-size: var(--step-3); }
+  .house__lead { margin-top: 1.75rem; color: var(--ink-2); max-width: 52ch; }
+  .house__facts { margin: 2.5rem 0 0; display: grid; gap: 1.5rem; }
+  .house__facts div { display: grid; grid-template-columns: 11rem 1fr; gap: 1rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+  .house__facts dt { font: 400 var(--step-1)/1.2 var(--serif); color: var(--gold); }
+  .house__facts dd { margin: 0; color: var(--ink-2); font-size: 0.9375rem; }
+  @media (max-width: 900px) {
+    .house__photo, .house__text { grid-column: 1 / -1; }
+    .house__facts div { grid-template-columns: 1fr; gap: 0.35rem; }
+  }
+
+  /* Gifts */
+  .gifts { background: var(--raised); }
+  .gifts__lead { margin-top: 1rem; color: var(--ink-2); max-width: 46ch; }
+  .gifts__all { display: inline-flex; align-items: center; gap: 0.6rem; color: var(--gold); text-decoration: none; white-space: nowrap; min-height: 2.75rem; }
+  .gifts__all :global(svg) { width: 1rem; height: 1rem; transition: transform 0.5s var(--ease); }
+  .gifts__all:hover :global(svg) { transform: translateX(0.3rem); }
+  .gifts__grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(2rem, 1rem + 3vw, 4.5rem); align-items: start; }
+  .gift-feature__img { display: block; overflow: hidden; background: var(--niche); }
+  .gift-feature__img img { width: 100%; aspect-ratio: 1.28; object-fit: cover; transition: transform 1.2s var(--ease); }
+  .gift-feature:hover .gift-feature__img img { transform: scale(1.03); }
+  .gift-feature__body { margin-top: 1.5rem; display: grid; gap: 0.75rem; }
+  .gift-feature h3 { font-size: var(--step-3); }
+  .gift-feature h3 a, .gift-row h3 a { text-decoration: none; }
+  .gift-feature h3 a:hover, .gift-row h3 a:hover { text-decoration: underline; }
+  .gift-feature p { color: var(--ink-2); max-width: 48ch; }
+  .gift-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-gold); }
+  .gift-row { display: grid; grid-template-columns: 5.5rem 1fr auto; gap: 1.25rem; align-items: center; padding-block: 1.25rem; border-bottom: 1px solid var(--line); }
+  .gift-row img { width: 5.5rem; height: 6.875rem; object-fit: contain; filter: drop-shadow(0 8px 14px rgb(0 0 0 / 0.55)); }
+  .gift-row h3 { font: 300 var(--step-2)/1.1 var(--serif); }
+  .gift-row p { color: var(--ink-2); font-size: var(--step--1); letter-spacing: 0.04em; margin-top: 0.4rem; }
+  .gift-row__buy { display: grid; justify-items: end; gap: 0.35rem; }
+  @media (max-width: 900px) { .gifts__grid { grid-template-columns: 1fr; } }
+  @media (max-width: 520px) {
+    .gift-row { grid-template-columns: 4.5rem 1fr; }
+    .gift-row img { width: 4.5rem; height: 5.625rem; }
+    .gift-row__buy { grid-column: 2; grid-template-columns: 1fr auto; align-items: center; justify-items: start; }
+  }
+
+  /* Delivery */
+  .delivery__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 2.5rem var(--gutter); }
+  .delivery__grid h2 { grid-column: 1 / span 4; font-size: var(--step-3); }
+  .delivery__list { grid-column: 5 / -1; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; }
+  .delivery__list li { border-top: 1px solid var(--line-gold); padding-top: 1.25rem; }
+  .delivery__list h3 { font: 400 var(--step-1)/1.2 var(--serif); margin-bottom: 0.75rem; }
+  .delivery__list p { color: var(--ink-2); font-size: 0.9375rem; }
+  .delivery__pickup { grid-column: 5 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1.25rem; color: var(--ink-2); }
+  .delivery__pickup :global(svg) { width: 1.1rem; height: 1.1rem; color: var(--gold); }
+  .delivery__pickup a { color: var(--gold); font: 700 var(--step--1)/1 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; padding-block: 0.8rem; }
+  @media (max-width: 1000px) { .delivery__grid h2, .delivery__list, .delivery__pickup { grid-column: 1 / -1; } }
+  @media (max-width: 700px) { .delivery__list { grid-template-columns: 1fr; } }
+
+  /* Closing */
+  .closing { position: relative; isolation: isolate; min-height: clamp(26rem, 60vh, 38rem); display: grid; align-items: center; overflow: hidden; }
+  .closing img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+  .closing::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgb(14 12 10 / 0.92) 0%, rgb(14 12 10 / 0.7) 45%, rgb(14 12 10 / 0.35) 100%); }
+  .closing__inner { display: grid; justify-items: start; gap: 2.5rem; }
+  .closing blockquote { margin: 0; }
+  .closing blockquote p { max-width: 20ch; font: 300 italic var(--step-3)/1.15 var(--serif); }
+</style>

@@ -1,0 +1,52 @@
+---
+import { t } from '../i18n';
+import type { Lang } from '../data/products';
+
+interface Props { lang: Lang; }
+const s = t[Astro.props.lang].age;
+---
+<dialog class="gate" data-age-gate aria-labelledby="gate-title" aria-describedby="gate-text">
+  <img src="/media/brand/monogram-ivory.png" alt="" width="512" height="512" />
+  <h2 id="gate-title">{s.title}</h2>
+  <p id="gate-text" data-gate-text>{s.text}</p>
+  <div class="gate__actions">
+    <button class="btn" type="button" data-age-yes>{s.yes}</button>
+    <button class="btn btn--ghost" type="button" data-age-no>{s.no}</button>
+  </div>
+  <p class="gate__denied" data-gate-denied hidden>{s.denied}</p>
+</dialog>
+
+<script>
+  const KEY = 'bh-age-ok';
+  const gate = document.querySelector<HTMLDialogElement>('[data-age-gate]')!;
+  let ok = false;
+  try { ok = Number(localStorage.getItem(KEY)) > Date.now(); } catch {}
+  if (!ok) {
+    gate.showModal();
+    gate.addEventListener('cancel', (e) => e.preventDefault());
+    gate.querySelector('[data-age-yes]')!.addEventListener('click', () => {
+      try { localStorage.setItem(KEY, String(Date.now() + 30 * 864e5)); } catch {}
+      gate.close();
+    });
+    gate.querySelector('[data-age-no]')!.addEventListener('click', () => {
+      gate.querySelector<HTMLElement>('[data-gate-denied]')!.hidden = false;
+      gate.querySelector<HTMLElement>('.gate__actions')!.hidden = true;
+    });
+  }
+</script>
+
+<style>
+  .gate {
+    width: min(100% - 2rem, 32rem); padding: clamp(2rem, 1rem + 4vw, 3.5rem);
+    background: var(--raised); color: var(--ink); border: 1px solid var(--line-gold); text-align: center;
+    box-shadow: 0 40px 80px -20px rgb(0 0 0 / 0.7);
+  }
+  .gate::backdrop { background: rgb(8 7 6 / 0.82); backdrop-filter: blur(14px); }
+  .gate[open] { animation: gate-in 0.7s var(--ease); }
+  @keyframes gate-in { from { opacity: 0; transform: translateY(0.75rem); } }
+  .gate img { width: 5.5rem; height: auto; margin: 0 auto 1.75rem; }
+  .gate h2 { font-size: var(--step-3); margin-bottom: 1rem; }
+  .gate p { color: var(--ink-2); max-width: 34ch; margin-inline: auto; }
+  .gate__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-top: 2rem; }
+  .gate__denied { margin-top: 2rem; color: var(--ink) !important; }
+</style>

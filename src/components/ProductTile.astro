@@ -1,0 +1,21 @@
+---
+import AddButton from './AddButton.astro';
+import { href, price } from '../i18n';
+import type { Lang, Product } from '../data/products';
+
+interface Props { lang: Lang; product: Product; eager?: boolean; }
+const { lang, product: p, eager = false } = Astro.props;
+---
+<article class="tile" data-cat={p.cat}>
+  <div class="tile__niche">
+    <img src={`/media/p/${p.img}-s.webp`} srcset={`/media/p/${p.img}-s.webp 400w, /media/p/${p.img}.webp 800w`} sizes="(max-width: 600px) 50vw, (max-width: 1100px) 33vw, 22rem" alt={`${p.kind[lang]} ${p.name[lang]}`} width="400" height="500" loading={eager ? 'eager' : 'lazy'} decoding="async" />
+  </div>
+  <div>
+    <h3 class="tile__name"><a href={href(lang, `/product/${p.slug}/`)}>{p.name[lang]}</a></h3>
+    <p class="tile__meta num">{p.kind[lang]} · {p.volume[lang]}{p.abv ? ` · ${p.abv}%` : ''}</p>
+  </div>
+  <div class="tile__buy">
+    <span class="tile__price num">{price(p.price)}</span>
+    <AddButton lang={lang} product={p} />
+  </div>
+</article>

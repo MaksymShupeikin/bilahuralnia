@@ -1,0 +1,74 @@
+---
+import ProductTile from './ProductTile.astro';
+import { t } from '../i18n';
+import { products as all, categories as allCats, type Lang, type Category } from '../data/products';
+
+// exclude: categories shown elsewhere on the page (home renders gifts in their own section).
+interface Props { lang: Lang; heading?: 'h1' | 'h2'; exclude?: Category; }
+const { lang, heading = 'h2', exclude } = Astro.props;
+const products = all.filter((p) => p.cat !== exclude);
+const categories = allCats.filter((c) => c !== exclude);
+const s = t[lang];
+const H = heading;
+const counts = Object.fromEntries(categories.map((c) => [c, products.filter((p) => p.cat === c).length]));
+---
+<section class="section coll" id="collection" aria-labelledby="coll-title">
+  <div class="wrap">
+    <div class="section-head coll__head">
+      <H id="coll-title">{s.collectionTitle}</H>
+      <div class="coll__filters" role="group" aria-label={s.collectionTitle} data-filters>
+        <button type="button" aria-pressed="true" data-filter="all">{s.all}<sup class="num">{products.length}</sup></button>
+        {categories.map((c) => <button type="button" aria-pressed="false" data-filter={c}>{s.cats[c]}<sup class="num">{counts[c]}</sup></button>)}
+      </div>
+    </div>
+    <div class="coll__grid" data-grid>
+      {products.map((p, i) => <ProductTile lang={lang} product={p} eager={i < 4 && heading === 'h1'} />)}
+    </div>
+  </div>
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>('#collection');
+  if (root) {
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+    const tiles = [...root.querySelectorAll<HTMLElement>('[data-cat]')];
+    const apply = (cat: string) => {
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === cat)));
+      tiles.forEach((el) => (el.hidden = cat !== 'all' && el.dataset.cat !== cat));
+    };
+    const run = (cat: string) => {
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduce && 'startViewTransition' in document) (document as any).startViewTransition(() => apply(cat));
+      else apply(cat);
+      const url = new URL(location.href);
+      cat === 'all' ? url.searchParams.delete('c') : url.searchParams.set('c', cat);
+      history.replaceState(null, '', url);
+    };
+    buttons.forEach((b) => b.addEventListener('click', () => run(b.dataset.filter!)));
+    const initial = new URLSearchParams(location.search).get('c');
+    if (initial && buttons.some((b) => b.dataset.filter === initial)) apply(initial);
+  }
+</script>
+
+<style>
+  .coll__head { flex-wrap: wrap; }
+  .coll__filters { display: flex; flex-wrap: wrap; gap: 0.25rem 1.75rem; }
+  .coll__filters button {
+    position: relative; min-height: 2.75rem; padding: 0; background: none; border: 0; cursor: pointer;
+    font: 700 var(--step--1)/1 var(--sans); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-2);
+    transition: color 0.3s var(--ease);
+  }
+  .coll__filters button::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0.35rem; height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.5s var(--ease); }
+  .coll__filters button:hover { color: var(--ink); }
+  .coll__filters button[aria-pressed='true'] { color: var(--ink); }
+  .coll__filters button[aria-pressed='true']::after { transform: scaleX(1); }
+  .coll__filters sup { margin-left: 0.35em; font-size: 0.6875rem; letter-spacing: 0.04em; color: var(--gold); }
+  .coll__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(2.5rem, 1.5rem + 2vw, 4rem) clamp(1rem, 0.5rem + 1.5vw, 2rem); view-transition-name: collection-grid; }
+  .coll__grid > [hidden] { display: none; }
+  @media (max-width: 1100px) { .coll__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 760px) {
+    .coll__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .coll__filters { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scrollbar-width: none; width: calc(100% + 2 * var(--gutter)); }
+    .coll__filters button { flex: none; }
+  }
+</style>

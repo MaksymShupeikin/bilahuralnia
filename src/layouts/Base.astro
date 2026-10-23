@@ -1,0 +1,49 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import AgeGate from '../components/AgeGate.astro';
+import { t, altHref, type Strings } from '../i18n';
+import type { Lang } from '../data/products';
+
+interface Props { lang: Lang; path: string; title?: string; description?: string; overlay?: boolean; }
+const { lang, path, title, description, overlay = false } = Astro.props;
+const s: Strings = t[lang];
+---
+<!doctype html>
+<html lang={lang === 'uk' ? 'uk' : 'en'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title ? `${title} — ${s.rights}` : s.title}</title>
+    <meta name="description" content={description ?? s.description} />
+    <meta name="theme-color" content="#0e0c0a" />
+    <link rel="icon" href="/favicon.png" />
+    <link rel="alternate" hreflang={lang === 'uk' ? 'en' : 'uk'} href={altHref(lang, path)} />
+  </head>
+  <body data-lang={lang}>
+    <a class="skip" href="#main">{lang === 'uk' ? 'До змісту' : 'Skip to content'}</a>
+    <Header lang={lang} path={path} overlay={overlay} />
+    <main id="main"><slot /></main>
+    <Footer lang={lang} />
+    <AgeGate lang={lang} />
+    <div class="toast" role="status" aria-live="polite" hidden></div>
+    <script>
+      import '../scripts/cart.ts';
+    </script>
+    <style is:global>
+      .skip { position: fixed; left: 1rem; top: -4rem; z-index: 100; padding: 0.75rem 1rem; background: var(--gold); color: var(--on-gold); }
+      .skip:focus { top: 1rem; }
+      .toast {
+        position: fixed; z-index: 60; left: 50%; bottom: 1.5rem; translate: -50% 0;
+        display: flex; gap: 1.25rem; align-items: center;
+        padding: 0.9rem 1.25rem; max-width: calc(100% - 2rem);
+        background: var(--raised-2); border: 1px solid var(--line-gold); color: var(--ink);
+        box-shadow: 0 18px 40px -12px rgb(0 0 0 / 0.6);
+        animation: toast-in 0.5s var(--ease);
+      }
+      .toast a { color: var(--gold); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; font-size: var(--step--1); white-space: nowrap; }
+      @keyframes toast-in { from { opacity: 0; translate: -50% 0.75rem; } }
+    </style>
+  </body>
+</html>

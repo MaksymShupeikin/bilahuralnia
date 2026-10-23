@@ -1,0 +1,13 @@
+---
+import Icon from './Icon.astro';
+import { t } from '../i18n';
+import type { Lang, Product } from '../data/products';
+
+interface Props { lang: Lang; product: Product; class?: string; qtyFrom?: string; }
+const { lang, product, class: cls, qtyFrom } = Astro.props;
+const s = t[lang];
+---
+<button type="button" class:list={['add', cls]} data-add={product.slug} data-name={product.name[lang]} data-qty-from={qtyFrom} aria-label={s.addTo(product.name[lang])}>
+  <span class="when-idle"><Icon name="plus" />{s.add}</span>
+  <span class="when-added"><Icon name="check" />{s.added}</span>
+</button>

@@ -1,0 +1,198 @@
+---
+import Icon from './Icon.astro';
+import { t, href } from '../i18n';
+import { products, type Lang } from '../data/products';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const s = t[lang];
+const c = s.cartPage;
+// Only what the client needs to draw lines and totals.
+const catalog = Object.fromEntries(products.map((p) => [p.slug, { name: p.name[lang], kind: `${p.kind[lang]} · ${p.volume[lang]}`, price: p.price, img: p.img, url: href(lang, `/product/${p.slug}/`) }]));
+---
+<section class="wrap cart" data-cart-page data-lang={lang}>
+  <h1>{c.title}</h1>
+
+  <div class="cart__empty" data-empty hidden>
+    <p>{c.empty}</p>
+    <a class="btn" href={href(lang, '/#collection')}>{c.emptyCta}<Icon name="arrow" /></a>
+  </div>
+
+  <div class="cart__grid" data-filled hidden>
+    <div>
+      <ul class="cart__lines" data-lines></ul>
+      <div class="cart__total"><span>{c.total}</span><strong class="num" data-total></strong></div>
+      <p class="cart__note">{c.shippingNote}</p>
+    </div>
+
+    <form class="checkout" data-checkout novalidate>
+      <h2>{c.formTitle}</h2>
+      <label class="field"><span>{c.name}</span><input class="input" name="name" autocomplete="name" required /><em class="field__error" aria-live="polite"></em></label>
+      <label class="field"><span>{c.phone}</span><input class="input num" name="phone" type="tel" autocomplete="tel" placeholder="+380" required pattern="^\+?3?8?0\d{9}$" /><em class="field__error" aria-live="polite"></em></label>
+      <fieldset class="checkout__set">
+        <legend class="visually-hidden">{c.deliveryOpt}</legend>
+        <label class="check"><input type="radio" name="method" value="nova-poshta" checked /><span>{c.deliveryOpt}</span></label>
+        <label class="check"><input type="radio" name="method" value="pickup" /><span>{c.pickupOpt}</span></label>
+      </fieldset>
+      <div class="checkout__np" data-np>
+        <label class="field"><span>{c.city}</span><input class="input" name="city" autocomplete="address-level2" required /><em class="field__error" aria-live="polite"></em></label>
+        <label class="field"><span>{c.branch}</span><input class="input" name="branch" inputmode="numeric" required /><em class="field__error" aria-live="polite"></em></label>
+      </div>
+      <fieldset class="checkout__set">
+        <legend>{c.payment}</legend>
+        {c.pay.map((label, i) => <label class="check"><input type="radio" name="payment" value={label} checked={i === 0} /><span>{label}</span></label>)}
+      </fieldset>
+      <label class="field"><span>{c.comment}</span><textarea class="input" name="comment" rows="3"></textarea></label>
+      <label class="check checkout__adult"><input type="checkbox" name="adult" required /><span>{c.adult}</span></label>
+      <em class="field__error" data-adult-error aria-live="polite"></em>
+      <button class="btn checkout__submit" type="submit" data-submit>{c.submit}</button>
+      <p class="checkout__status" role="status" data-status></p>
+    </form>
+  </div>
+</section>
+
+<script is:inline type="application/json" id="cart-catalog" set:html={JSON.stringify({ catalog, strings: { remove: c.remove, required: c.required, phoneInvalid: c.phoneInvalid, sending: c.sending, done: c.done, mailto: c.mailto, error: c.error, submit: c.submit, qty: s.qty, fewer: c.fewer, more: c.more } })}></script>
+
+<script>
+  import { read, write } from '../scripts/cart';
+
+  const root = document.querySelector<HTMLElement>('[data-cart-page]')!;
+  const { catalog, strings } = JSON.parse(document.getElementById('cart-catalog')!.textContent!);
+  const fmt = (n: number) => `${n.toLocaleString('uk-UA').replace(/\s/g, '\u00a0')}\u00a0₴`;
+  const lines = root.querySelector<HTMLUListElement>('[data-lines]')!;
+  // Same strokes as Icon.astro; lines are drawn client-side so the component can't be used here.
+  const MINUS = 'M5 12h14', PLUS = 'M12 5v14 M5 12h14';
+  const icon = (d: string) => `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="${d}"/></svg>`;
+
+  function render() {
+    const cart = read();
+    const items = Object.entries(cart).filter(([slug, q]) => catalog[slug] && q > 0);
+    root.querySelector<HTMLElement>('[data-empty]')!.hidden = items.length > 0;
+    root.querySelector<HTMLElement>('[data-filled]')!.hidden = items.length === 0;
+    lines.replaceChildren(...items.map(([slug, q]) => {
+      const p = catalog[slug];
+      const li = document.createElement('li');
+      li.className = 'line';
+      li.innerHTML = `<img src="/media/cut/${p.img}.webp" alt="" width="360" height="450">
+        <div class="line__text"><a class="line__name"></a><span class="line__kind"></span></div>
+        <div class="line__qty"><button type="button" data-d="-1">${icon(MINUS)}</button><span class="num"></span><button type="button" data-d="1">${icon(PLUS)}</button></div>
+        <strong class="line__sum num"></strong>
+        <button type="button" class="line__rm" data-rm></button>`;
+      const name = li.querySelector<HTMLAnchorElement>('.line__name')!;
+      name.textContent = p.name; name.href = p.url;
+      li.querySelector('.line__kind')!.textContent = `${p.kind} · ${fmt(p.price)}`;
+      li.querySelector('.line__qty span')!.textContent = String(q);
+      li.querySelector('.line__qty')!.setAttribute('aria-label', `${strings.qty}: ${q}`);
+      li.querySelector('.line__sum')!.textContent = fmt(p.price * q);
+      li.querySelector('[data-d="-1"]')!.setAttribute('aria-label', `${strings.fewer}: ${p.name}`);
+      li.querySelector('[data-d="1"]')!.setAttribute('aria-label', `${strings.more}: ${p.name}`);
+      const rm = li.querySelector<HTMLButtonElement>('[data-rm]')!;
+      rm.textContent = strings.remove;
+      li.querySelectorAll<HTMLButtonElement>('[data-d]').forEach((b) => b.addEventListener('click', () => {
+        const c = read(); c[slug] = Math.max(0, Math.min(99, (c[slug] || 0) + Number(b.dataset.d)));
+        if (!c[slug]) delete c[slug];
+        write(c); render();
+      }));
+      rm.addEventListener('click', () => { const c = read(); delete c[slug]; write(c); render(); });
+      return li;
+    }));
+    root.querySelector('[data-total]')!.textContent = fmt(items.reduce((sum, [slug, q]) => sum + catalog[slug].price * q, 0));
+  }
+  render();
+  addEventListener('storage', render);
+
+  const form = root.querySelector<HTMLFormElement>('[data-checkout]')!;
+  const np = form.querySelector<HTMLElement>('[data-np]')!;
+  form.querySelectorAll<HTMLInputElement>('input[name="method"]').forEach((r) => r.addEventListener('change', () => {
+    const pickup = form.method.value === 'pickup';
+    np.hidden = pickup;
+    np.querySelectorAll('input').forEach((i) => (i.required = !pickup));
+  }));
+
+  const fieldError = (input: HTMLInputElement) => {
+    if (input.validity.valueMissing) return strings.required;
+    if (input.name === 'phone' && !/^\+?3?8?0\d{9}$/.test(input.value.replace(/[\s()-]/g, ''))) return strings.phoneInvalid;
+    return '';
+  };
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    let firstBad: HTMLInputElement | null = null;
+    form.querySelectorAll<HTMLInputElement>('input.input[required]').forEach((input) => {
+      if (input.closest('[hidden]')) return;
+      const msg = fieldError(input);
+      input.setAttribute('aria-invalid', String(!!msg));
+      const err = input.parentElement!.querySelector('.field__error');
+      if (err) err.textContent = msg;
+      if (msg && !firstBad) firstBad = input;
+    });
+    const adult = form.querySelector<HTMLInputElement>('input[name="adult"]')!;
+    root.querySelector('[data-adult-error]')!.textContent = adult.checked ? '' : strings.required;
+    if (firstBad) return (firstBad as HTMLInputElement).focus();
+    if (!adult.checked) return adult.focus();
+
+    const data = Object.fromEntries(new FormData(form));
+    const cart = read();
+    const order = { ...data, lang: root.dataset.lang, items: Object.entries(cart).map(([slug, qty]) => ({ slug, name: catalog[slug]?.name, qty, price: catalog[slug]?.price })) };
+    const btn = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    btn.disabled = true; btn.textContent = strings.sending; status.textContent = '';
+    try {
+      const endpoint = import.meta.env.PUBLIC_ORDER_ENDPOINT;
+      if (endpoint) {
+        const res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(order) });
+        if (!res.ok) throw new Error(String(res.status));
+      } else {
+        // shortcut: no order backend yet, so the order opens as an e-mail to the shop; set PUBLIC_ORDER_ENDPOINT once one exists.
+        const body = order.items.map((i) => `${i.name} × ${i.qty} = ${i.price * i.qty} ₴`).join('\n') + `\n\n${Object.entries(data).filter(([k]) => k !== 'adult').map(([k, v]) => `${k}: ${v}`).join('\n')}`;
+        location.href = `mailto:bilahuralnia@gmail.com?subject=${encodeURIComponent('Замовлення з сайту')}&body=${encodeURIComponent(body)}`;
+        status.textContent = strings.mailto;
+        return;
+      }
+      write({});
+      form.reset();
+      render();
+      status.textContent = strings.done;
+    } catch {
+      status.textContent = strings.error;
+    } finally {
+      btn.disabled = false; btn.textContent = strings.submit;
+    }
+  });
+</script>
+
+<style>
+  .cart { padding-block: clamp(3rem, 2rem + 4vw, 6rem) var(--section); }
+  .cart h1 { font-size: var(--step-4); margin-bottom: clamp(2rem, 1rem + 3vw, 3.5rem); }
+  .cart__empty { display: grid; justify-items: start; gap: 1.5rem; color: var(--ink-2); }
+  .cart__grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(2.5rem, 1rem + 5vw, 6rem); align-items: start; }
+  .cart__lines { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-gold); }
+  .cart__lines :global(.line) { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr) auto auto; grid-template-areas: 'img text qty sum' 'img rm qty sum'; gap: 0.25rem 1.5rem; align-items: center; padding-block: 1.25rem; border-bottom: 1px solid var(--line); }
+  .cart__lines :global(.line img) { grid-area: img; width: 4.5rem; height: 5.625rem; object-fit: contain; filter: drop-shadow(0 8px 14px rgb(0 0 0 / 0.55)); }
+  .cart__lines :global(.line__text) { grid-area: text; display: grid; gap: 0.25rem; align-self: end; }
+  .cart__lines :global(.line__name) { font: 300 var(--step-2)/1.1 var(--serif); text-decoration: none; }
+  .cart__lines :global(.line__kind) { color: var(--ink-2); font-size: var(--step--1); }
+  .cart__lines :global(.line__qty) { grid-area: qty; display: inline-grid; grid-template-columns: 2.75rem 2rem 2.75rem; align-items: center; text-align: center; border: 1px solid var(--line); height: 2.75rem; }
+  .cart__lines :global(.line__qty button) { height: 100%; display: grid; place-items: center; background: none; border: 0; color: var(--ink-2); cursor: pointer; }
+  .cart__lines :global(.line__qty svg) { width: 1rem; height: 1rem; }
+  .cart__lines :global(.line__qty button:hover) { color: var(--gold); }
+  .cart__lines :global(.line__sum) { grid-area: sum; font: 400 var(--step-1)/1 var(--serif); min-width: 6rem; text-align: right; }
+  .cart__lines :global(.line__rm) { grid-area: rm; justify-self: start; align-self: start; background: none; border: 0; padding: 0.4rem 0; color: var(--ink-3); font-size: var(--step--1); letter-spacing: 0.08em; cursor: pointer; text-decoration: underline; text-underline-offset: 0.25em; }
+  .cart__lines :global(.line__rm:hover) { color: var(--danger); }
+  .cart__total { display: flex; justify-content: space-between; align-items: baseline; padding-top: 1.5rem; font: 300 var(--step-2)/1 var(--serif); }
+  .cart__total strong { font-weight: 400; color: var(--gold); }
+  .cart__note { margin-top: 0.75rem; color: var(--ink-3); font-size: var(--step--1); }
+  .checkout { display: grid; gap: 1.25rem; padding: clamp(1.5rem, 1rem + 2vw, 2.5rem); background: var(--raised); border-top: 1px solid var(--line-gold); }
+  .checkout h2 { font-size: var(--step-2); margin-bottom: 0.5rem; }
+  .checkout__set { border: 0; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
+  .checkout__set legend { font-size: var(--step--1); letter-spacing: 0.08em; color: var(--ink-2); margin-bottom: 0.75rem; padding: 0; }
+  .checkout__np { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .checkout__np[hidden] { display: none; }
+  .checkout__submit { margin-top: 0.5rem; width: 100%; }
+  .checkout__status { color: var(--ink); min-height: 1.5em; }
+  @media (max-width: 960px) { .cart__grid { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) {
+    .cart__lines :global(.line) { grid-template-columns: 4rem minmax(0, 1fr) auto; grid-template-areas: 'img text text' 'img qty sum' 'img rm rm'; gap: 0.5rem 1rem; }
+    .cart__lines :global(.line img) { width: 4rem; height: 5rem; }
+    .checkout__np { grid-template-columns: 1fr; }
+  }
+</style>

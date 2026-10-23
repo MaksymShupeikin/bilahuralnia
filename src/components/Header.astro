@@ -1,0 +1,95 @@
+---
+import Icon from './Icon.astro';
+import { t, href, altHref } from '../i18n';
+import type { Lang } from '../data/products';
+
+interface Props { lang: Lang; path: string; overlay: boolean; }
+const { lang, path, overlay } = Astro.props;
+const s = t[lang];
+const links = [
+  [s.nav.collection, href(lang, '/#collection')],
+  [s.nav.gifts, href(lang, '/#gifts')],
+  [s.nav.house, href(lang, '/#house')],
+  [s.nav.delivery, href(lang, '/delivery/')],
+];
+---
+<header class:list={['hdr', { 'hdr--overlay': overlay }]} data-header>
+  <div class="hdr__bar">
+    <button class="hdr__menu" type="button" aria-expanded="false" aria-controls="site-menu" data-menu-toggle>
+      <Icon name="menu" /><span class="visually-hidden">{s.menu}</span>
+    </button>
+    <a class="hdr__logo" href={href(lang, '/')} aria-label={s.rights}>
+      <img src="/media/brand/logo-ivory.png" alt="" width="446" height="167" />
+    </a>
+    <nav class="hdr__nav" aria-label={lang === 'uk' ? 'Основна навігація' : 'Main'}>
+      {links.map(([label, url]) => <a href={url}>{label}</a>)}
+    </nav>
+    <div class="hdr__end">
+      <a class="hdr__lang" href={altHref(lang, path)} hreflang={lang === 'uk' ? 'en' : 'uk'} lang={lang === 'uk' ? 'en' : 'uk'}>
+        <span aria-hidden="true">{s.langShort}</span><span class="visually-hidden">{s.langName}</span>
+      </a>
+      <a class="hdr__cart" href={href(lang, '/cart/')}>
+        <Icon name="bag" />
+        <span class="visually-hidden">{s.cart}</span>
+        <span class="hdr__count num" data-cart-count hidden>0</span>
+      </a>
+    </div>
+  </div>
+  <div class="hdr__sheet" id="site-menu" data-menu hidden>
+    <nav aria-label={s.menu}>
+      {links.map(([label, url]) => <a href={url}>{label}</a>)}
+    </nav>
+    <div class="hdr__sheet-foot">
+      <a href="tel:+380676000344" class="num">+38 (067) 600 03 44</a>
+      <a href={altHref(lang, path)}>{s.langName}</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]')!;
+  const toggle = header.querySelector<HTMLButtonElement>('[data-menu-toggle]')!;
+  const sheet = header.querySelector<HTMLElement>('[data-menu]')!;
+  const setOpen = (open: boolean) => {
+    toggle.setAttribute('aria-expanded', String(open));
+    sheet.hidden = !open;
+    header.classList.toggle('is-open', open);
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+  };
+  toggle.addEventListener('click', () => setOpen(sheet.hidden));
+  sheet.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) setOpen(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !sheet.hidden) { setOpen(false); toggle.focus(); } });
+  const onScroll = () => header.classList.toggle('is-scrolled', scrollY > 40);
+  onScroll();
+  addEventListener('scroll', onScroll, { passive: true });
+</script>
+
+<style>
+  .hdr { position: sticky; top: 0; z-index: 40; color: var(--ink); background: var(--ground); border-bottom: 1px solid var(--line); transition: background-color 0.5s var(--ease), border-color 0.5s var(--ease); }
+  .hdr--overlay { position: fixed; inset: 0 0 auto; background: transparent; border-color: transparent; }
+  .hdr--overlay.is-scrolled, .hdr.is-open { background: rgb(14 12 10 / 0.94); border-color: var(--line); backdrop-filter: blur(10px); }
+  .hdr__bar { height: var(--header-h); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1.5rem; padding-inline: var(--gutter); }
+  .hdr__logo { grid-column: 1; justify-self: start; display: block; }
+  .hdr__logo img { width: clamp(7.5rem, 6rem + 4vw, 9.5rem); height: auto; }
+  .hdr__nav { display: flex; gap: clamp(1.5rem, 0.5rem + 2.5vw, 3rem); }
+  .hdr__nav a, .hdr__lang { font: 700 var(--step--1)/1 var(--sans); letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none; padding-block: 0.75rem; background: linear-gradient(var(--gold), var(--gold)) no-repeat 0 85% / 0 1px; transition: background-size 0.5s var(--ease); }
+  .hdr__nav a:hover, .hdr__lang:hover { background-size: 100% 1px; }
+  .hdr__end { justify-self: end; display: flex; align-items: center; gap: 1.25rem; }
+  .hdr__cart { position: relative; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; }
+  .hdr__cart :global(svg), .hdr__menu :global(svg) { width: 1.5rem; height: 1.5rem; }
+  .hdr__count { position: absolute; top: 0.1rem; right: -0.1rem; min-width: 1.25rem; height: 1.25rem; padding: 0 0.3rem; display: grid; place-items: center; background: var(--gold); color: var(--on-gold); font: 700 0.6875rem/1 var(--sans); }
+  .hdr__count.bump { animation: bump 0.6s var(--ease); }
+  @keyframes bump { 30% { transform: scale(1.35); } }
+  .hdr__menu { display: none; width: 2.75rem; height: 2.75rem; margin-left: -0.6rem; place-items: center; background: none; border: 0; cursor: pointer; }
+  .hdr__sheet { position: fixed; inset: var(--header-h) 0 0; background: var(--ground); padding: 2rem var(--gutter); display: flex; flex-direction: column; justify-content: space-between; overflow-y: auto; }
+  .hdr__sheet[hidden] { display: none; }
+  .hdr__sheet nav { display: grid; }
+  .hdr__sheet nav a { font: 300 var(--step-3)/1.1 var(--serif); padding-block: 0.9rem; border-bottom: 1px solid var(--line); text-decoration: none; }
+  .hdr__sheet-foot { display: grid; gap: 0.75rem; padding-top: 2rem; color: var(--ink-2); }
+  @media (max-width: 900px) {
+    .hdr__bar { grid-template-columns: auto 1fr auto; gap: 0.5rem; }
+    .hdr__menu { display: grid; }
+    .hdr__logo { grid-column: 2; justify-self: center; }
+    .hdr__nav, .hdr__lang { display: none; }
+  }
+</style>

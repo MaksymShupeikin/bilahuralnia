@@ -1,0 +1,92 @@
+---
+import ProductTile from './ProductTile.astro';
+import AddButton from './AddButton.astro';
+import Icon from './Icon.astro';
+import { t, href, price } from '../i18n';
+import { products, type Lang, type Product } from '../data/products';
+
+interface Props { lang: Lang; product: Product; }
+const { lang, product: p } = Astro.props;
+const s = t[lang];
+const related = [...products.filter((x) => x.cat === p.cat && x.slug !== p.slug), ...products.filter((x) => x.classic && x.cat !== p.cat)].slice(0, 4);
+---
+<article class="pdp">
+  <div class="pdp__media">
+    <img src={`/media/p/${p.img}.webp`} alt={`${p.kind[lang]} ${p.name[lang]}`} width="800" height="1000" fetchpriority="high" />
+  </div>
+  <div class="pdp__info">
+    <a class="pdp__back" href={href(lang, `/collection/?c=${p.cat}`)}><Icon name="arrow" />{s.cats[p.cat]}</a>
+    <h1>{p.name[lang]}</h1>
+    <p class="pdp__kind">{p.kind[lang]}</p>
+    <dl class="pdp__spec num">
+      <div><dt>{lang === 'uk' ? 'Об’єм' : 'Volume'}</dt><dd>{p.volume[lang]}</dd></div>
+      {p.abv > 0 && <div><dt>{lang === 'uk' ? 'Міцність' : 'Strength'}</dt><dd>{p.abv}% vol</dd></div>}
+      <div><dt>{lang === 'uk' ? 'Ціна' : 'Price'}</dt><dd>{price(p.price)}</dd></div>
+    </dl>
+    <p class="pdp__desc">{p.desc?.[lang] ?? s.noDesc}</p>
+    <div class="pdp__buy">
+      <div class="stepper" data-stepper>
+        <button type="button" data-step="-1" aria-label={lang === 'uk' ? 'Менше' : 'Fewer'}><Icon name="minus" /></button>
+        <input id="qty" class="num" type="number" inputmode="numeric" min="1" max="99" value="1" aria-label={s.qty} />
+        <button type="button" data-step="1" aria-label={lang === 'uk' ? 'Більше' : 'More'}><Icon name="plus" /></button>
+      </div>
+      <AddButton lang={lang} product={p} class="btn pdp__add" qtyFrom="#qty" />
+    </div>
+    <ul class="pdp__notes">
+      <li>{s.delivery[0][0]} — {s.delivery[0][1]}</li>
+      <li>{s.delivery[2][1]}</li>
+    </ul>
+  </div>
+</article>
+
+<section class="section pdp__related" aria-labelledby="also">
+  <div class="wrap">
+    <div class="section-head"><h2 id="also">{s.alsoTitle}</h2></div>
+    <div class="pdp__grid">{related.map((x) => <ProductTile lang={lang} product={x} />)}</div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-stepper]').forEach((el) => {
+    const input = el.querySelector('input')!;
+    el.querySelectorAll<HTMLButtonElement>('[data-step]').forEach((b) =>
+      b.addEventListener('click', () => { input.value = String(Math.max(1, Math.min(99, (Number(input.value) || 1) + Number(b.dataset.step)))); })
+    );
+  });
+</script>
+
+<style>
+  .pdp { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); min-height: calc(100svh - var(--header-h)); }
+  .pdp__media { background: var(--niche); display: grid; place-items: center; overflow: hidden; }
+  .pdp__media img { width: 100%; height: 100%; max-height: calc(100svh - var(--header-h)); object-fit: cover; }
+  .pdp__info { align-self: center; padding: clamp(2.5rem, 1rem + 5vw, 6rem) var(--gutter); max-width: 40rem; }
+  .pdp__back { display: inline-flex; align-items: center; gap: 0.6rem; color: var(--ink-3); font-size: 0.9375rem; text-decoration: none; padding-block: 0.75rem; margin-bottom: clamp(2.5rem, 1.5rem + 3vw, 4.5rem); }
+  .pdp__back :global(svg) { width: 1rem; height: 1rem; transform: scaleX(-1); transition: transform 0.5s var(--ease); }
+  .pdp__back:hover :global(svg) { transform: scaleX(-1) translateX(0.3rem); }
+  .pdp__back:hover { color: var(--gold); }
+  .pdp h1 { font-size: var(--step-4); }
+  .pdp__kind { margin-top: 0.75rem; color: var(--gold); font: 300 italic var(--step-1)/1.3 var(--serif); }
+  .pdp__spec { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 2.5rem; margin: 2.25rem 0 0; padding-block: 1.25rem; border-block: 1px solid var(--line); }
+  .pdp__spec dt { font: 700 0.6875rem/1 var(--sans); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 0.5rem; }
+  .pdp__spec dd { margin: 0; font: 400 var(--step-1)/1 var(--serif); }
+  .pdp__desc { margin-top: 1.75rem; color: var(--ink-2); max-width: 56ch; }
+  .pdp__buy { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.25rem; }
+  .stepper { display: inline-grid; grid-template-columns: 3rem 3.25rem 3rem; border: 1px solid var(--line); height: 3.25rem; }
+  .stepper button { display: grid; place-items: center; background: none; border: 0; cursor: pointer; color: var(--ink-2); }
+  .stepper button:hover { color: var(--gold); }
+  .stepper :global(svg) { width: 1rem; height: 1rem; }
+  .stepper input { width: 100%; background: none; border: 0; border-inline: 1px solid var(--line); color: var(--ink); text-align: center; font: inherit; -moz-appearance: textfield; }
+  .stepper input::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .stepper input:focus { outline: none; background: var(--raised); }
+  :global(.pdp__add.add) { flex: 1; min-width: 12rem; border: 1px solid var(--gold); padding: 0 1.75rem; background: var(--gold); color: var(--on-gold); justify-content: center; }
+  :global(.pdp__add.add:hover) { background: var(--gold-hi); color: var(--on-gold); }
+  :global(.pdp__add.add.is-added) { background: transparent; color: var(--gold); }
+  .pdp__notes { list-style: none; margin: 2rem 0 0; padding: 0; display: grid; gap: 0.5rem; color: var(--ink-3); font-size: 0.9375rem; }
+  .pdp__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1rem, 0.5rem + 1.5vw, 2rem); }
+  @media (max-width: 900px) {
+    .pdp { grid-template-columns: 1fr; min-height: 0; }
+    .pdp__media img { max-height: 70svh; }
+    .pdp__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem 1rem; }
+  }
+  @media (max-width: 420px) { .pdp__spec { gap: 1.5rem; } }
+</style>
